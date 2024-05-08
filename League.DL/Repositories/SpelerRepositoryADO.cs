@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,35 +31,32 @@ namespace League.DL.Repositories
                     con.Open();
                     cmd.CommandText = query;
                     cmd.Parameters.AddWithValue("@naam", s.Naam);
-                    int n = (int)cmd.ExecuteScalar();
-                    if (n > 0) return true;
-                    return false;
+                    int n=(int)cmd.ExecuteScalar();
+                    if (n>0) return true; else return false;
                 }
                 catch(Exception ex) { throw new RepositoryException("BestaatSpeler"); }
             }
         }
-
         public Speler SchrijfSpelerInDB(Speler s)
         {
-            string query = "INSERT INTO Speler(naam,lengte,gewicht) output INSERTED.ID VALUES(@naam,@lengte,@gewicht)";
+            string query = "INSERT INTO Speler(naam,lengte,gewicht) output INSERTED.ID  VALUES(@naam,@lengte,@gewicht)";
             using (SqlConnection con = new SqlConnection(connectionString))
             using (SqlCommand cmd = con.CreateCommand())
             {
                 try
                 {
                     con.Open();
-                    cmd.CommandText = query;
-                    cmd.Parameters.AddWithValue("@naam", s.Naam);
+                    cmd.Parameters.AddWithValue("@naam",s.Naam);
                     if (s.Lengte==null) cmd.Parameters.AddWithValue("@lengte",DBNull.Value);
                     else cmd.Parameters.AddWithValue("@lengte", s.Lengte);
-                    if (s.Gewicht == null) cmd.Parameters.AddWithValue("@gewicht", DBNull.Value);
+                    if (s.Gewicht==null) cmd.Parameters.AddWithValue("@gewicht", DBNull.Value);
                     else cmd.Parameters.AddWithValue("@gewicht", s.Gewicht);
-
+                    cmd.CommandText= query;
                     int newID=(int)cmd.ExecuteScalar();
-                    s.ZetId(newID); 
+                    s.ZetId(newID);
                     return s;
                 }
-                catch (Exception ex) { throw new RepositoryException("SchrijfSpeler"); }
+                catch (Exception ex) { throw new RepositoryException("SchrijfSpeler",ex); }
             }
         }
     }

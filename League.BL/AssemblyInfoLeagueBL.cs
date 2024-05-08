@@ -17,3 +17,4 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("e7f8e460-2dd9-4b47-a324-851201e65ddc")]
 [assembly:InternalsVisibleTo("TestProjectDomein")]
+[assembly: InternalsVisibleTo("League.DL")]
