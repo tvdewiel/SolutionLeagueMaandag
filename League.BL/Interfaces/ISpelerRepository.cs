@@ -1,4 +1,5 @@
 ﻿using League.BL.Domein;
+using League.BL.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace League.BL.Interfaces
     {
         bool BestaatSpeler(Speler s);
         Speler SchrijfSpelerInDB(Speler s);
+        IReadOnlyList<SpelerInfo> SelecteerSpeler(int? id, string naam);
     }
 }
